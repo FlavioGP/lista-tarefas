@@ -15,6 +15,7 @@ export default class Main extends Component {
     this.state = {
       newAssignment: '',
       assignments: [],
+      index: -1,
     };
 
     // this.changeInput = this.changeInput.bind(this);
@@ -28,7 +29,7 @@ export default class Main extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    const { assignments } = this.state;
+    const { assignments, index } = this.state;
     let { newAssignment } = this.state;
     newAssignment = newAssignment.trim();
 
@@ -37,13 +38,28 @@ export default class Main extends Component {
 
     const newAssignments = [...assignments];
 
-    this.setState({
-      assignments: [...newAssignments, newAssignment],
-    });
+    if (index === -1) {
+      this.setState({
+        assignments: [...newAssignments, newAssignment],
+        newAssignment: '',
+      });
+    } else {
+      newAssignments[index] = newAssignment;
+      this.setState({
+        assignments: [...newAssignments],
+        index: -1,
+        newAssignment: '',
+      });
+    }
   };
 
   handleEdit = (e, index) => {
-    console.log('Edit', index);
+    const { assignments } = this.state;
+
+    this.setState({
+      index,
+      newAssignment: assignments[index],
+    });
   };
 
   handleDelete = (e, index) => {
