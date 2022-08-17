@@ -21,6 +21,24 @@ export default class Main extends Component {
     // this.changeInput = this.changeInput.bind(this);
   }
 
+  componentDidMount() {
+    const storageAssigments = JSON.parse(localStorage.getItem('Assigments'));
+
+    if (!storageAssigments) return;
+
+    this.setState({
+      assignments: storageAssigments,
+    });
+  }
+
+  componentDidUpdate(pevProps, prevState) {
+    const { assignments } = this.state;
+
+    if (assignments === prevState.assignments) return;
+
+    localStorage.setItem('Assigments', JSON.stringify(assignments));
+  }
+
   handleChange = (e) => {
     this.setState({
       newAssignment: e.target.value,
