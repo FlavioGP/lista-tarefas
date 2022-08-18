@@ -4,7 +4,7 @@
 ### Aprendido:
 
 <ul>
-  <li>Criacao do app React com **npm i create-react-app**</li>
+  <li>Criacao do app React com  **npm i create-react-app** </li>
   <li>Criacao de components</li>
   <li>Salvamento no localStorage</li>
 </ul>
