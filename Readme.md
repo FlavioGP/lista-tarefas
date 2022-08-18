@@ -10,4 +10,5 @@
 </ul>
 
 > npm start
+
 Para executar o app
