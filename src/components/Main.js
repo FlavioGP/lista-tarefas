@@ -1,20 +1,17 @@
 import React, { Component } from 'react';
 
-// Form
-import { FaPlus, FaEdit, FaWindowClose } from 'react-icons/fa';
-
-// Tarefas
-// import { FaEdit, FaWindowClose } from 'react-icons/fa';
-
 import './Main.css';
+
+import Form from './Form';
+import Tasks from './Tasks';
 
 export default class Main extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      newAssignment: '',
-      assignments: [],
+      newTasks: '',
+      tasks: [],
       index: -1,
     };
 
@@ -22,97 +19,93 @@ export default class Main extends Component {
   }
 
   componentDidMount() {
-    const storageAssigments = JSON.parse(localStorage.getItem('Assigments'));
+    const storageTasks = JSON.parse(localStorage.getItem('Assigments'));
 
-    if (!storageAssigments) return;
+    if (!storageTasks) return;
 
     this.setState({
-      assignments: storageAssigments,
+      tasks: storageTasks,
     });
   }
 
   componentDidUpdate(pevProps, prevState) {
-    const { assignments } = this.state;
+    const { tasks } = this.state;
 
-    if (assignments === prevState.assignments) return;
+    if (tasks === prevState.tasks) return;
 
-    localStorage.setItem('Assigments', JSON.stringify(assignments));
+    localStorage.setItem('Assigments', JSON.stringify(tasks));
   }
 
   handleChange = (e) => {
     this.setState({
-      newAssignment: e.target.value,
+      newTasks: e.target.value,
     });
   };
 
   handleSubmit = (e) => {
     e.preventDefault();
-    const { assignments, index } = this.state;
-    let { newAssignment } = this.state;
-    newAssignment = newAssignment.trim();
+    const { tasks, index } = this.state;
+    let { newTasks } = this.state;
+    newTasks = newTasks.trim();
 
-    if (assignments.indexOf(newAssignment) !== -1) return;
-    if (newAssignment === '') return;
+    if (tasks.indexOf(newTasks) !== -1) return;
+    if (newTasks === '') return;
 
-    const newAssignments = [...assignments];
+    const newTaskss = [...tasks];
 
     if (index === -1) {
       this.setState({
-        assignments: [...newAssignments, newAssignment],
-        newAssignment: '',
+        tasks: [...newTaskss, newTasks],
+        newTasks: '',
       });
     } else {
-      newAssignments[index] = newAssignment;
+      newTaskss[index] = newTasks;
       this.setState({
-        assignments: [...newAssignments],
+        tasks: [...newTaskss],
         index: -1,
-        newAssignment: '',
+        newTasks: '',
       });
     }
   };
 
   handleEdit = (e, index) => {
-    const { assignments } = this.state;
+    const { tasks } = this.state;
 
     this.setState({
       index,
-      newAssignment: assignments[index],
+      newTasks: tasks[index],
     });
   };
 
   handleDelete = (e, index) => {
-    const { assignments } = this.state;
-    const newAssignments = [...assignments];
-    newAssignments.splice(index, 1);
+    const { tasks } = this.state;
+    const newTaskss = [...tasks];
+    newTaskss.splice(index, 1);
 
     this.setState({
-      assignments: [...newAssignments],
+      tasks: [...newTaskss],
     });
   };
 
   render() {
-    const { newAssignment, assignments } = this.state;
+    const { newTasks, tasks } = this.state;
     return (
       <div className="main">
         <h1>Lista de tarefas</h1>
-        <form onSubmit={this.handleSubmit} action="#" className="form">
-          <input onChange={this.handleChange} type="text" value={newAssignment} />
-          <button type="submit">
-            <FaPlus />
-          </button>
-        </form>
 
-        <ul className="assignments">
-          {assignments.map((assignment, index) => (
-            <li key={assignment}>
-              {assignment}
-              <span>
-                <FaEdit onClick={(e) => this.handleEdit(e, index)} className="edit" />
-                <FaWindowClose onClick={(e) => this.handleDelete(e, index)} className="delete" />
-              </span>
-            </li>
-          ))}
-        </ul>
+        <Form
+          handleSubmit={this.handleSubmit}
+          handleChange={this.handleChange}
+          newTasks={newTasks}
+        />
+
+        <Tasks
+          handleEdit={this.handleEdit}
+          handleDelete={this.handleDelete}
+          tasks={tasks}
+
+        />
+
       </div>
     );
   }

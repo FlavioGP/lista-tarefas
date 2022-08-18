@@ -20,7 +20,7 @@ module.exports = {
   rules: {
     'react/jsx-filename-extension': 0,
     'no-console': 0,
-    'class-methods-use-this': 0,
     'no-unused-vars': 0,
+    'react/forbid-prop-types': 0,
   },
 };
